@@ -50,6 +50,7 @@ public class BlogController {
     }
 
 
+
     @GetMapping("/blogs/input")
     public String input(Model model) {
         setTypeAndTag(model);

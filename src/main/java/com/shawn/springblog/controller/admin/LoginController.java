@@ -2,6 +2,7 @@ package com.shawn.springblog.controller.admin;
 
 import com.shawn.springblog.entity.User;
 import com.shawn.springblog.service.UserService;
+import com.shawn.springblog.util.Const;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,7 +37,7 @@ public class LoginController {
         User user = userService.checkUser(username, password);
         if (user != null) {
             user.setPassword(null);
-            session.setAttribute("user",user);
+            session.setAttribute(Const.CURRENT_USER,user);
             return "admin/index";
         }
 

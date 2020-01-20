@@ -1,9 +1,11 @@
 package com.shawn.springblog.controller;
 
+import com.shawn.springblog.entity.Blog;
 import com.shawn.springblog.service.BlogService;
 import com.shawn.springblog.service.TagService;
 import com.shawn.springblog.service.TypeService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -32,7 +34,7 @@ public class IndexController {
                         Model model) {
 
 
-        model.addAttribute("page",blogService.listBlog(pageable));
+        model.addAttribute("page", blogService.listBlog(pageable));
         model.addAttribute("types", typeService.listTypeTop(6));
         model.addAttribute("tags", tagService.listTagTop(10));
         model.addAttribute("recommendBlogs", blogService.listRecommendBlogTop(8));
@@ -43,10 +45,13 @@ public class IndexController {
     @PostMapping("/search")
     public String search(@PageableDefault(size = 8, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable,
                          @RequestParam String query, Model model) {
-        model.addAttribute("page", blogService.listBlog("%"+query+"%", pageable));
+
+
+        model.addAttribute("page", blogService.listBlog(query, pageable));
         model.addAttribute("query", query);
         return "search";
     }
+
 
     @GetMapping("/blog/{id}")
     public String blog(@PathVariable Long id, Model model) {

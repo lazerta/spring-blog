@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragments :: head(~{::title})">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Detail</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+  <link rel="stylesheet" href="../static/css/typo.css">
+  <link rel="stylesheet" href="../static/css/animate.css">
+  <link rel="stylesheet" href="../static/lib/prism/prism.css">
+  <link rel="stylesheet" href="../static/lib/tocbot/tocbot.css">
+  <link rel="stylesheet" href="../static/css/me.css">
+</head>
+<body>
+
+
+  <nav th:replace="_fragments :: menu(1)"  class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
+
+  </nav>
+
+
+  <div id="waypoint" class="m-container-small m-padded-tb-big animated fadeIn">
+    <div class="ui container">
+      <div class="ui top attached segment">
+        <div class="ui horizontal link list">
+          <div class="item">
+            <img src="https://unsplash.it/100/100?image=1005" th:src="@{${blog.user.avatar}}"  alt="" class="ui avatar image">
+            <div class="content"><a href="#" class="header" th:text="${blog.user.alias}">lorem</a></div>
+          </div>
+          <div class="item">
+            <i class="calendar icon"></i> <span th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd')}">date</span>
+          </div>
+          <div class="item">
+            <i class="eye icon"></i> <span th:text="${blog.viewsCount}">111</span>
+          </div>
+        </div>
+      </div>
+      <div class="ui attached segment">
+
+        <img src="https://unsplash.it/800/450?image=1005" th:src="@{${blog.firstPicture}}" alt="" class="ui fluid rounded image">
+      </div>
+      <div class="ui  attached padded segment">
+
+        <div class="ui right aligned basic segment">
+          <div class="ui orange basic label" th:text="${blog.flag}">ordinal</div>
+        </div>
+
+        <h2 class="ui center aligned header" th:text="${blog.title}">title</h2>
+        <br>
+    
+        <div id="content" class="typo  typo-selection js-toc-content m-padded-lr-responsive m-padded-tb-large" th:utext="${blog.content}">
+
+
+        <div class="m-padded-lr-responsive">
+          <div class="ui basic teal left pointing label" th:each="tag : ${blog.tags}" th:text="${tag.name}">name</div>
+        </div>
+
+
+        <div th:if="${blog.thumbUpEnable}">
+          <div class="ui center aligned basic segment">
+            <button id="payButton" class="ui orange basic circular button">Thumb up</button>
+          </div>
+
+          </div>
+        </div>
+
+      </div>
+      <div class="ui attached positive message" th:if="${blog.copyRight}">
+
+        <div class="ui middle aligned grid">
+          <div class="eleven wide column">
+            <ui class="list">
+              <li>Author: <span th:text="${blog.user.alias}">alias</span><a href="#" th:href="@{/about}" target="_blank">
+                Contact Author
+              </a></li>
+              <li>published time<span th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd HH:mm')}"> time</span></li>
+               <li>&copy; Copy Right Reserved</li>
+            </ui>
+          </div>
+          <div class="five wide column">
+           <a href="https://github.com/lazerta">
+             <img src="../static/images/github.png" th:src="@{/images/github.png}" alt="github" class="ui right floated rounded bordered image" style="width: 110px"/>
+           </a>
+          </div>
+        </div>
+      </div>
+      <div  class="ui bottom attached segment" th:if="${blog.commentEnable}">
+<!--        comment-->
+        <div id="comment-container"  class="ui teal segment">
+          <div th:fragment="commentList">
+            <div class="ui threaded comments" style="max-width: 100%;">
+              <h3 class="ui dividing header">Comment</h3>
+              <div class="comment" th:each="comment : ${comments}">
+                <a class="avatar">
+                  <img src="https://unsplash.it/100/100?image=1005" th:src="@{${comment.avatar}}">
+                </a>
+                <div class="content">
+                  <a class="author" >
+                    <span th:text="${comment.alias}">alias</span>
+                    <div class="ui mini basic teal left pointing label m-padded-mini" th:if="${comment.adminComment}">Author </div>
+                  </a>
+                  <div class="metadata">
+                    <span class="date" th:text="${#dates.format(comment.createTime,'yyyy-MM-dd HH:mm')}">Today </span>
+                  </div>
+                  <div class="text" th:text="${comment.content}">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing.
+                  </div>
+                  <div class="actions">
+                    <a class="reply" data-commentid="1" data-commentalias="Matt" th:attr="data-commentid=${comment.id},data-commentalias=${comment.alias}" onclick="reply(this)">reply</a>
+                  </div>
+                </div>
+                <div class="comments" th:if="${#arrays.length(comment.replyComments)}>0">
+                  <div class="comment" th:each="reply : ${comment.replyComments}">
+                    <a class="avatar">
+                      <img src="https://unsplash.it/100/100?image=1005" th:src="@{${reply.avatar}}">
+                    </a>
+                    <div class="content">
+                      <a class="author" >
+                        <span th:text="${reply.alias}">alias</span>
+                        <div class="ui mini basic teal left pointing label m-padded-mini" th:if="${reply.adminComment}">author</div>
+                        &nbsp;<span th:text="|@ ${reply.parentComment.alias}|" class="m-teal">aa aass</span>
+                      </a>
+                      <div class="metadata">
+                        <span class="date" th:text="${#dates.format(reply.createTime,'yyyy-MM-dd HH:mm')}">Today at 5:42PM</span>
+                      </div>
+                      <div class="text" th:text="${reply.content}">
+                        How artistic!
+                      </div>
+                      <div class="actions">
+                        <a class="reply" data-commentid="1" data-commentalias="Matt" th:attr="data-commentid=${reply.id},data-commentalias=${reply.alias}" onclick="reply(this)">reply</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/*-->
+              <div class="comment">
+                <a class="avatar">
+                  <img src="https://unsplash.it/100/100?image=1005">
+                </a>
+                <div class="content">
+                  <a class="author">Elliot Fu</a>
+                  <div class="metadata">
+                    <span class="date">Yesterday at 12:30AM</span>
+                  </div>
+                  <div class="text">
+                    <p>This has been very useful for my research. Thanks as well!</p>
+                  </div>
+                  <div class="actions">
+                    <a class="reply">reply</a>
+                  </div>
+                </div>
+                <div class="comments">
+                  <div class="comment">
+                    <a class="avatar">
+                      <img src="https://unsplash.it/100/100?image=1005">
+                    </a>
+                    <div class="content">
+                      <a class="author">Jenny Hess</a>
+                      <div class="metadata">
+                        <span class="date">Just now</span>
+                      </div>
+                      <div class="text">
+                        Elliot you are always so right :)
+                      </div>
+                      <div class="actions">
+                        <a class="reply">reply</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="comment">
+                <a class="avatar">
+                  <img src="https://unsplash.it/100/100?image=1005">
+                </a>
+                <div class="content">
+                  <a class="author">Joe Henderson</a>
+                  <div class="metadata">
+                    <span class="date">5 days ago</span>
+                  </div>
+                  <div class="text">
+                    Dude, this is awesome. Thanks so much
+                  </div>
+                  <div class="actions">
+                    <a class="reply">reply</a>
+                  </div>
+                </div>
+              </div>
+              <!--*/-->
+
+            </div>
+          </div>
+        </div>
+<!--        -->
+        <div id="comment-form" class="ui form">
+          <input type="hidden" name="blog.id" th:value="${blog.id}">
+          <input type="hidden" name="parentComment.id" value="-1">
+          <div class="field">
+            <textarea name="content" placeholder="content..."></textarea>
+          </div>
+          <div class="fields">
+            <div class="field m-mobile-wide m-margin-bottom-small">
+              <div class="ui left icon input">
+                <i class="user icon"></i>
+                <input type="text" name="alias" placeholder="name" th:value="${session.user}!=null ? ${session.user.alias}">
+              </div>
+            </div>
+            <div class="field m-mobile-wide m-margin-bottom-small">
+              <div class="ui left icon input">
+                <i class="mail icon"></i>
+                <input type="text" name="email" placeholder="email" th:value="${session.user}!=null ? ${session.user.email}">
+              </div>
+            </div>
+            <div class="field  m-margin-bottom-small m-mobile-wide">
+              <button id="commentpost-btn" type="button" class="ui teal button m-mobile-wide"><i class="edit icon"></i>publish</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toolbar" class="m-padded m-fixed m-right-bottom" style="display: none">
+    <div class="ui vertical icon buttons ">
+      <button type="button" class="ui toc teal button" >Catalog</button>
+      <a href="#comment-container" class="ui teal button" >Comment</a>
+
+      <div id="toTop-button" class="ui icon button" ><i class="chevron up icon"></i></div>
+    </div>
+  </div>
+
+  <div class="ui toc-container flowing popup transition hidden" style="width: 250px!important;">
+    <ol class="js-toc">
+
+    </ol>
+  </div>
+
+  <div id="qrcode" class="ui  flowing popup transition hidden "style="width: 130px !important;">
+
+  </div>
+
+
+
+  <br>
+  <br>
+  <!---->
+  <footer th:replace="_fragments :: footer" class="ui inverted vertical segment m-padded-tb-massive">
+
+  </footer>
+
+  <!--/*/<th:block th:replace="_fragments :: script">/*/-->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+  
+<script src="../static/lib/prism/prism.js"></script>
+<script src="../static/lib/tocbot/tocbot.min.js"></script>
+<script src="../static/lib/qrcode/qrcode.min.js"></script>
+<script src="../static/lib/waypoints/jquery.waypoints.min.js"></script>
+  <!--/*/</th:block>/*/-->
+
+
+  <script th:inline="javascript">
+
+    $('.menu.toggle').click(function () {
+      $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('#payButton').popup({
+      popup : $('.payQR.popup'),
+      on : 'click',
+      position: 'bottom center'
+    });
+
+    tocbot.init({
+      // Where to render the table of contents.
+      tocSelector: '.js-toc',
+      // Where to grab the headings to build the table of contents.
+      contentSelector: '.js-toc-content',
+      // Which headings to grab inside of the contentSelector element.
+      headingSelector: 'h1, h2, h3',
+    });
+
+    $('.toc.button').popup({
+      popup : $('.toc-container.popup'),
+      on : 'click',
+      position: 'left center'
+    });
+
+    $('.wechat').popup({
+      popup : $('.wechat-qr'),
+      position: 'left center'
+    });
+
+
+    
+    $('#toTop-button').click(function () {
+      $(window).scrollTo(0,500);
+    });
+
+
+    let waypoint = new Waypoint({
+      element: document.getElementById('waypoint'),
+      handler: function(direction) {
+        if (direction == 'down') {
+          $('#toolbar').show(100);
+        } else {
+          $('#toolbar').hide(500);
+        }
+        console.log('Scrolled to waypoint!  ' + direction);
+      }
+    });
+
+
+
+    $('.ui.form').form({
+      fields: {
+        title: {
+          identifier: 'content',
+          rules: [{
+            type: 'empty',
+            prompt: 'enter content'
+          }
+          ]
+        },
+        content: {
+          identifier: 'alias',
+          rules: [{
+            type: 'empty',
+            prompt: 'your name'
+          }]
+        },
+        type: {
+          identifier: 'email',
+          rules: [{
+            type: 'email',
+            prompt: 'valid email address'
+          }]
+        }
+      }
+    });
+
+    $(function () {
+      $("#comment-container").load(/*[[@{/comments/{id}(id=${blog.id})}]]*/"comments/6");
+    });
+
+
+
+    $('#commentpost-btn').click(function () {
+      var boo = $('.ui.form').form('validate form');
+      if (boo) {
+        console.log('validation success');
+        postData();
+      } else {
+        console.log('validation failed');
+      }
+
+    });
+    
+    function postData() {
+      $("#comment-container").load(/*[[@{/comments}]]*/"",{
+        "parentComment.id" : $("[name='parentComment.id']").val(),
+        "blog.id" : $("[name='blog.id']").val(),
+        "alias": $("[name='alias']").val(),
+        "email"   : $("[name='email']").val(),
+        "content" : $("[name='content']").val()
+      },function (responseTxt, statusTxt, xhr) {
+       $(window).scrollTo($('#comment-container'),500);
+        // clearContent();
+      });
+    }
+
+    function clearContent() {
+      $("[name='content']").val('');
+      $("[name='parentComment.id']").val(-1);
+      $("[name='content']").attr("placeholder", "enter content");
+    }
+
+
+    function reply(obj) {
+      var commentId = $(obj).data('commentid');
+      var commentalias = $(obj).data('commentalias');
+      $("[name='content']").attr("placeholder", "@"+commentalias).focus();
+      $("[name='parentComment.id']").val(commentId);
+      $(window).scrollTo($('#comment-form'),500);
+    }
+
+    
+  </script>
+</body>
+</html>

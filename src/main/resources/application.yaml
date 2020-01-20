@@ -1,3 +1,11 @@
 spring:
   profiles:
     active: [dev,el]
+
+comment.avatar: /images/avatar.png
+
+logging:
+  level:
+    root: info
+    com.shawn: debug
+  file: log/blog-dev.log

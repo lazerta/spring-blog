@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/_fragments :: head(~{::title})">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Publish</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+
+  <link rel="stylesheet" href="../../static/css/me.css">
+</head>
+<body>
+
+  <nav th:replace="admin/_fragments :: menu(1)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
+
+  </nav>
+  <div class="ui attached pointing menu">
+    <div class="ui container">
+      <div class="right menu">
+        <a href="#" th:href="@{/admin/blogs/input}" class="teal active item">Publish</a>
+        <a href="#" th:href="@{/admin/blogs}" class="item">List</a>
+      </div>
+    </div>
+  </div>
+
+
+  <div  class="m-container m-padded-tb-big">
+    <div class="ui container">
+      <form id="blog-form" action="#" th:object="${blog}" th:action="@{/admin/blogs}" method="post" class="ui form">
+        <input type="hidden" name="published" th:value="*{published}">
+        <input type="hidden" name="id" th:value="*{id}">
+        <div class="required field">
+          <div class="ui left labeled input">
+            <div class="ui selection compact teal basic dropdown label">
+              <input type="hidden" value="original" name="flag" th:value="*{flag}" >
+              <i class="dropdown icon"></i>
+              <div class="text">original</div>
+              <div class="menu">
+                <div class="item" data-value="original">original</div>
+                <div class="item" data-value="other">other</div>
+                <div class="item" data-value="translate">translate</div>
+              </div>
+            </div>
+            <input type="text" name="title" placeholder="title" th:value="*{title}">
+          </div>
+        </div>
+
+        <div class="required field">
+          <div id="md-content" style="z-index: 1 !important;">
+            <textarea placeholder="content" name="content" style="display: none" th:text="*{content}"></textarea>
+          </div>
+        </div>
+
+        <div class="two fields">
+          <div class="required field">
+            <div class="ui left labeled action input">
+              <label class="ui compact teal basic label">Type</label>
+              <div class="ui fluid selection dropdown">
+                <input type="hidden" name="type.id" th:value="*{type}!=null ? *{type.id}">
+                <i class="dropdown icon"></i>
+                <div class="default text">Type</div>
+                <div class="menu">
+                  <div th:each="type : ${types}" class="item" data-value="1" th:data-value="${type.id}" th:text="${type.name}">Error log</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class=" field">
+            <div class="ui left labeled action input">
+              <label class="ui compact teal basic label">tag</label>
+              <div class="ui fluid selection multiple search  dropdown">
+                <input type="hidden" name="tagIds" th:value="*{tagIds}" >
+                <i class="dropdown icon"></i>
+                <div class="default text">tag</div>
+                <div class="menu">
+                  <div th:each="tag : ${tags}" class="item" data-value="1" th:data-value="${tag.id}" th:text="${tag.name}">java</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="required field">
+          <div class="ui left labeled input">
+            <label class="ui teal basic label">firstPicture</label>
+            <input type="text" name="firstPicture" th:value="*{firstPicture}" placeholder="url">
+          </div>
+        </div>
+
+        <div class="required field">
+          <textarea name="description" th:text="*{description}" placeholder="description(max 200 character)" maxlength="200"></textarea>
+        </div>
+
+        <div class="inline fields">
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="checkbox" id="recommend" name="recommend" checked th:checked="*{recommend}" class="hidden">
+              <label for="recommend">recommend</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="checkbox" id="copyRight" name="copyRight" th:checked="*{copyRight}" class="hidden">
+              <label for="copyRight">Other</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="checkbox" id="thumbUpEnable" name="thumbUpEnable" th:checked="*{thumbUpEnable}" class="hidden">
+              <label for="thumbUpEnable">ThumbsUp</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="checkbox" id="commentEnable" name="commentEnable" th:checked="*{commentEnable}" class="hidden">
+              <label for="commentEnable">Comment</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="ui error message"></div>
+
+        <div class="ui right aligned container">
+          <button type="button" class="ui button" onclick="window.history.go(-1)" >back</button>
+          <button type="button" id="save-btn" class="ui secondary button">save</button>
+          <button type="button" id="publish-btn" class="ui teal button">publish</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <br>
+  <br>
+
+  <footer th:replace="admin/_fragments :: footer" class="ui inverted vertical segment m-padded-tb-massive">
+
+  </footer>
+
+  <!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+  <script src="../../static/lib/editormd/editormd.min.js"></script><script src="../../static/lib/editormd/languages/en.js"></script>
+  <!--/*/</th:block>/*/-->
+
+
+  <script>
+
+
+    var contentEditor;
+    $(function() {
+      contentEditor = editormd("md-content", {
+        width   : "100%",
+        height  : 640,
+        syncScrolling : "single",
+
+
+        path    : "/lib/editormd/lib/"
+      });
+    });
+    $('.menu.toggle').click(function () {
+      $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.ui.dropdown').dropdown({
+      on : 'hover'
+    });
+
+    $('#save-btn').click(function () {
+      $('[name="published"]').val(false);
+      $('#blog-form').submit();
+    });
+
+
+    $('#publish-btn').click(function () {
+      $('[name="published"]').val(true);
+      $('#blog-form').submit();
+    });
+
+
+
+    $('.ui.form').form({
+      fields : {
+        title : {
+          identifier: 'title',
+          rules: [{
+            type : 'empty',
+            prompt: 'enter title'
+          }]
+        },
+        content : {
+          identifier: 'content',
+          rules: [{
+            type : 'empty',
+            prompt: 'enter content'
+          }]
+        },
+        typeId : {
+          identifier: 'type.id',
+          rules: [{
+            type : 'empty',
+            prompt: 'enter type'
+          }]
+        },
+        firstPicture : {
+          identifier: 'firstPicture',
+          rules: [{
+            type : 'empty',
+            prompt: 'enter first picture'
+          }]
+        },
+        description : {
+          identifier: 'description',
+          rules: [{
+            type : 'empty',
+            prompt: 'enter description'
+          }]
+        }
+      }
+    });
+
+  </script>
+</body>
+</html>

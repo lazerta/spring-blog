@@ -1,20 +1,18 @@
 #h2
 spring:
-  h2:
-    console:
-      enabled: true
 
-  #datasource
   datasource:
-    driver-class-name: org.h2.Driver
-    username: sa
-
-  #jpa
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.29.192:3306/blog_db
+    username: root
+    password: 123
   jpa:
-    show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
+    show-sql: true
+  thymeleaf:
+    cache: false
 
-#elastic
 
-
+server:
+  port: 9000

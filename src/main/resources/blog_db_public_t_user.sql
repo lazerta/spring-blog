@@ -1,0 +1,1 @@
+INSERT INTO public.t_user (id, alias, avatar, create_time, email, password, type, update_time, username) VALUES (1, 'test ', 'https://api.adorable.io/avatars/285/abott@adorable.png', '2020-01-20 21:59:30.000000', 'test@email.com', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 1, '2020-01-20 21:57:32.000000', 'test');

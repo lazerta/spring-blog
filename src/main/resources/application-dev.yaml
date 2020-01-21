@@ -1,17 +1,21 @@
-
 spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:mysql://192.168.29.192:3306/blog_db
-    username: root
+    url: jdbc:postgresql://192.168.29.192:5432/blog_db
+    username: postgres
     password: 123
   jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
     hibernate:
       ddl-auto: update
     show-sql: true
-  thymeleaf:
-    cache: false
+
+
 
 
 server:

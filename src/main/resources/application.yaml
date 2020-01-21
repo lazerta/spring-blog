@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: @spring.profiles.active@
+    active: prod
 
 comment.avatar: /images/avatar.png
 

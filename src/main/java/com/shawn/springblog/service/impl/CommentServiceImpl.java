@@ -17,6 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@javax.transaction.Transactional
 public class CommentServiceImpl implements CommentService {
 
 

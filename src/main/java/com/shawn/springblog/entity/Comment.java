@@ -2,6 +2,7 @@ package com.shawn.springblog.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.util.List;
 @Table(name = "t_comment")
 @Getter
 @Setter
+@Transactional
 public class Comment implements Serializable {
 
     @Id

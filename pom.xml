@@ -17,6 +17,7 @@
     <properties>
         <java.version>8</java.version>
         <markdown.version>0.13.1</markdown.version>
+        <spring.profiles.active>dev</spring.profiles.active>
     </properties>
 
     <dependencies>
@@ -62,10 +63,10 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

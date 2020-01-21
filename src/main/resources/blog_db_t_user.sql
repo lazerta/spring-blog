@@ -1,1 +1,0 @@
-INSERT INTO blog_db.t_user (alias, avatar, create_time, email, password, type, update_time, username) VALUES ('shawn', 'https://gravatar.com/avatar/3355463bcc9bc3cefc297f4971d1625f?s=400&d=robohash&r=x', '2020-01-18 20:03:46', 'shawnlin119@gmail.com', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', 1, '2020-01-18 20:03:32', 'test');

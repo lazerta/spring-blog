@@ -31,3 +31,4 @@ build/
 .vscode/
 /log
 /target
+./src/main/resources/application-prod.yaml

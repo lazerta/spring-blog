@@ -1,5 +1,0 @@
-INSERT INTO blog_db.t_comment (admin_comment, avatar, content, create_time, email, nickname, blog_id, parent_comment_id, alias) VALUES (false, '/images/avatar.png', 'adsa', '2020-01-19 05:33:03', 'linxiang08@gmail.com', null, 1, null, null);
-INSERT INTO blog_db.t_comment (admin_comment, avatar, content, create_time, email, nickname, blog_id, parent_comment_id, alias) VALUES (false, '/images/avatar.png', 'adsa', '2020-01-19 05:34:09', 'linxiang08@gmail.com', null, 1, null, 'asd');
-INSERT INTO blog_db.t_comment (admin_comment, avatar, content, create_time, email, nickname, blog_id, parent_comment_id, alias) VALUES (false, '/images/avatar.png', 'ghfghfghfg', '2020-01-19 05:37:06', 'linxiang08@gmail.com', null, 1, 2, 'asd');
-INSERT INTO blog_db.t_comment (admin_comment, avatar, content, create_time, email, nickname, blog_id, parent_comment_id, alias) VALUES (true, 'https://gravatar.com/avatar/3355463bcc9bc3cefc297f4971d1625f?s=400&d=robohash&r=x', 'admin comment
-', '2020-01-20 19:17:33', 'shawnlin119@gmail.com', null, 3, null, 'shawn');

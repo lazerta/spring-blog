@@ -13,7 +13,7 @@ spring:
             non_contextual_creation: true
     hibernate:
       ddl-auto: update
-    show-sql: true
+
 
 
 

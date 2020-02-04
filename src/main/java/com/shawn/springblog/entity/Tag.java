@@ -19,7 +19,7 @@ public class Tag implements Serializable {
     private Long id;
     private String name;
 
-    @ManyToMany(mappedBy = "tags")
+    @ManyToMany(mappedBy = "tags",cascade = {CascadeType.PERSIST,CascadeType.REMOVE} )
     private List<Blog> blogs = new ArrayList<>();
 
 }

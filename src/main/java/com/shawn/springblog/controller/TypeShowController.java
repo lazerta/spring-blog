@@ -32,7 +32,13 @@ public class TypeShowController {
                         @PathVariable Long id, Model model) {
         List<Type> types = typeService.listTypeTop(10000);
         if (id == -1) {
-           id = types.get(0).getId();
+            if (types.size() == 0) {
+                id = 0L;
+            } else {
+                id = types.get(0).getId();
+            }
+
+
         }
         BlogQuery blogQuery = new BlogQuery();
         blogQuery.setTypeId(id);

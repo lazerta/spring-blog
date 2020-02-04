@@ -21,7 +21,7 @@ public class Type {
     @NotBlank(message = "type name can't be empty")
     private String name;
 
-    @OneToMany(mappedBy = "type")
+    @OneToMany(mappedBy = "type",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<Blog> blogs = new ArrayList<>();
 
 }

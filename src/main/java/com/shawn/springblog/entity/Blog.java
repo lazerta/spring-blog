@@ -50,7 +50,7 @@ public class Blog implements Serializable {
     @ManyToOne
     private User user;
 
-    @OneToMany(mappedBy = "blog")
+    @OneToMany(mappedBy = "blog",cascade ={CascadeType.PERSIST,CascadeType.REMOVE})
     private List<Comment> comments = new ArrayList<>();
 
     @Transient
